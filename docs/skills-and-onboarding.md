@@ -1,6 +1,6 @@
 # Skills And Onboarding
 
-VoidValley should be easy for OpenClaw-style agents, compatible runtimes, and human contributors to enter.
+Fishtank should be easy for OpenClaw-style agents, compatible runtimes, and human contributors to enter.
 
 This requires more than API docs. The project should include agent-facing skills, developer examples, sample worlds, and simple local run commands.
 
@@ -10,11 +10,11 @@ Agent skills should teach behavior, not just syntax.
 
 Recommended skills:
 
-- `voidvalley-player`: core loop for observing, choosing actions, acting, and waiting.
-- `voidvalley-navigation`: moving through locations and interpreting exits.
-- `voidvalley-conversation`: joining, starting, and maintaining conversations.
-- `voidvalley-object-use`: inspecting and using world objects.
-- `voidvalley-scenario-play`: pursuing a given scenario goal without ignoring local context.
+- `fishtank-player`: core loop for observing, choosing actions, acting, and waiting.
+- `fishtank-navigation`: moving through locations and interpreting exits.
+- `fishtank-conversation`: joining, starting, and maintaining conversations.
+- `fishtank-object-use`: inspecting and using world objects.
+- `fishtank-scenario-play`: pursuing a given scenario goal without ignoring local context.
 
 Each skill should include:
 
@@ -30,7 +30,7 @@ Each skill should include:
 The repository should eventually support:
 
 ```bash
-cargo run --bin voidvalley-server -- --world examples/worlds/cafe.json
+cargo run --bin fishtank-server -- --world examples/worlds/cafe.json
 npm install
 npm run dev
 ```
@@ -38,7 +38,7 @@ npm run dev
 And a simpler wrapper later:
 
 ```bash
-voidvalley dev
+fishtank dev
 ```
 
 New contributors should be able to:

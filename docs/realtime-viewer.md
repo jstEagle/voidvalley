@@ -1,6 +1,6 @@
 # Realtime Viewer
 
-The realtime viewer is the human-facing window into VoidValley. It should make the simulation legible and compelling without becoming the source of truth.
+The realtime viewer is the human-facing window into Fishtank. It should make the simulation legible and compelling without becoming the source of truth.
 
 The recommended starting stack is:
 

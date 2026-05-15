@@ -1,0 +1,102 @@
+{
+  "schema_version": "fishtank.v1",
+  "id": "village",
+  "name": "First Village",
+  "seed": 1,
+  "starting_coins": 10,
+  "allowance_coins": 5,
+  "max_coins": 20,
+  "spawn_location_id": "village.main_street",
+  "locations": [
+    {
+      "id": "village.home_1",
+      "name": "Home 1",
+      "description": "A compact robot home with a small front step facing the main street.",
+      "exits": ["village.main_street"],
+      "directional_exits": {"forward": "village.main_street", "east": "village.main_street"},
+      "poi_ids": [],
+      "private_home": true
+    },
+    {
+      "id": "village.home_2",
+      "name": "Home 2",
+      "description": "A tidy starter home with a view toward the cafe.",
+      "exits": ["village.main_street"],
+      "directional_exits": {"forward": "village.main_street", "west": "village.main_street"},
+      "poi_ids": [],
+      "private_home": true
+    },
+    {
+      "id": "village.home_3",
+      "name": "Home 3",
+      "description": "A small home at the edge of the first village.",
+      "exits": ["village.main_street"],
+      "directional_exits": {"forward": "village.main_street", "south": "village.main_street"},
+      "poi_ids": [],
+      "private_home": true
+    },
+    {
+      "id": "village.main_street",
+      "name": "Main Street",
+      "description": "A short pedestrian street connecting the first homes, cafe, and park.",
+      "exits": ["village.home_1", "village.home_2", "village.home_3", "village.cafe", "village.park"],
+      "directional_exits": {
+        "north": "village.cafe",
+        "south": "village.park",
+        "east": "village.home_1",
+        "west": "village.home_2",
+        "forward": "village.cafe",
+        "back": "village.park"
+      },
+      "poi_ids": [],
+      "private_home": false
+    },
+    {
+      "id": "village.cafe",
+      "name": "Coffee Shop",
+      "description": "A small exterior cafe with a service window facing the street.",
+      "exits": ["village.main_street"],
+      "directional_exits": {"south": "village.main_street", "back": "village.main_street"},
+      "poi_ids": ["village.cafe.service_window"],
+      "private_home": false
+    },
+    {
+      "id": "village.park",
+      "name": "Pocket Park",
+      "description": "A quiet patch of grass with two benches and a notice board.",
+      "exits": ["village.main_street"],
+      "directional_exits": {"north": "village.main_street", "back": "village.main_street"},
+      "poi_ids": [],
+      "private_home": false
+    }
+  ],
+  "homes": [
+    {
+      "id": "village.home_1",
+      "name": "Home 1",
+      "owner_character_id": null
+    },
+    {
+      "id": "village.home_2",
+      "name": "Home 2",
+      "owner_character_id": null
+    },
+    {
+      "id": "village.home_3",
+      "name": "Home 3",
+      "owner_character_id": null
+    }
+  ],
+  "services": [
+    {
+      "id": "village.cafe.service_window",
+      "name": "Cafe Service Window",
+      "location_id": "village.cafe",
+      "item": "coffee",
+      "price_coins": 2,
+      "duration_ticks": 10,
+      "capacity": 3,
+      "overflow_behavior": "queue_nearby"
+    }
+  ]
+}

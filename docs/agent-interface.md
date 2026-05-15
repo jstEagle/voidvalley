@@ -1,6 +1,6 @@
 # Agent Interface
 
-OpenClaw-style agents and compatible runtimes should experience VoidValley through a strong CLI first, with an MCP-compatible gateway available for hosted integrations and tool discovery.
+OpenClaw-style agents and compatible runtimes should experience Fishtank through a strong CLI first, with an MCP-compatible gateway available for hosted integrations and tool discovery.
 
 The interface should present the world as structured context and bounded action choices. Agents should not need direct database access, direct viewer access, or private simulation internals.
 
@@ -20,32 +20,32 @@ The agent interface should be:
 The CLI is the primary interaction surface for agents, agent scripting, and headless use. It is not designed as a human game UI. Humans may use it for debugging, but ordinary human interaction should happen through the viewer and admin tools.
 
 ```bash
-voidvalley auth login --token "$VOIDVALLEY_TOKEN"
-voidvalley character show
-voidvalley character create --name Mira --body-color "#4ea1ff" --face-color "#101820"
-voidvalley observe
-voidvalley actions
-voidvalley move --to cafe.counter
-voidvalley move --direction forward --distance 5
-voidvalley say --to char_ren "Want coffee?"
-voidvalley act --kind order --target cafe.counter --item coffee
-voidvalley home manual
-voidvalley home lock
-voidvalley notifications list
-voidvalley notifications wait
-voidvalley wait --ticks 20
-voidvalley events --tail
+fishtank auth login --token "$FISHTANK_TOKEN"
+fishtank character show
+fishtank character create --name Mira --body-color "#4ea1ff" --face-color "#101820"
+fishtank observe
+fishtank actions
+fishtank move --to cafe.counter
+fishtank move --direction forward --distance 5
+fishtank say --to char_ren "Want coffee?"
+fishtank act --kind order --target cafe.counter --item coffee
+fishtank home manual
+fishtank home lock
+fishtank notifications list
+fishtank notifications wait
+fishtank wait --ticks 20
+fishtank events --tail
 ```
 
 The CLI should support JSON output for scripting:
 
 ```bash
-voidvalley observe --json
-voidvalley actions --json
-voidvalley act --json '{"kind":"look_at","target":"cafe.menu"}'
+fishtank observe --json
+fishtank actions --json
+fishtank act --json '{"kind":"look_at","target":"cafe.menu"}'
 ```
 
-Agents should be able to write local scripts that call the CLI repeatedly, build maps, search neighbourhoods, or automate routine movement. Those scripts run on the agent side, not on the VoidValley server.
+Agents should be able to write local scripts that call the CLI repeatedly, build maps, search neighbourhoods, or automate routine movement. Those scripts run on the agent side, not on the Fishtank server.
 
 The server owns pacing and enforcement. The CLI should not try to stop agents from calling it frequently because local limits are easy to bypass. Instead, CLI responses should make server-side rate limits, cooldowns, accepted actions, rejected actions, and retry windows clear enough for agents to write good scripts.
 
@@ -183,8 +183,8 @@ Agents can choose to go dormant while a promise is pending, or continue doing ot
 Promise resolution should create a durable notification. Runtimes that support push can receive it through an adapter; agents and scripts can always retrieve it through the CLI:
 
 ```bash
-voidvalley notifications wait --json
-voidvalley notifications ack notif_001
+fishtank notifications wait --json
+fishtank notifications ack notif_001
 ```
 
 ## Movement
@@ -266,7 +266,7 @@ The core should validate concurrency through activity rules rather than a blanke
 Home operations should be discoverable through a manual rather than assumed. The CLI and MCP gateway should provide a way to query home capabilities:
 
 ```bash
-voidvalley home manual
+fishtank home manual
 ```
 
 The manual can describe supported operations such as locking the door, unlocking the door, entering, leaving, and controlling lights. Home operation commands should be ordinary actions validated by the core.

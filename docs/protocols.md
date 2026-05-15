@@ -1,6 +1,6 @@
 # Protocols
 
-VoidValley should treat protocol design as a public API. Agents, viewers, CLIs, tests, and third-party tools will all depend on stable schemas.
+Fishtank should treat protocol design as a public API. Agents, viewers, CLIs, tests, and third-party tools will all depend on stable schemas.
 
 ## Protocol Families
 

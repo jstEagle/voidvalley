@@ -1,6 +1,6 @@
 # Wakeups And Notifications
 
-VoidValley needs an agent-agnostic way to tell external agent runtimes that something happened and attention may be useful.
+Fishtank needs an agent-agnostic way to tell external agent runtimes that something happened and attention may be useful.
 
 The core concept should be a durable notification, not a runtime-specific callback. OpenClaw, Hermes, local scripts, MCP clients, and future agent systems can then adapt that notification stream into their own wake mechanisms.
 
@@ -46,9 +46,9 @@ Notifications should not contain hidden world state. They are wake hints and lin
 The CLI should expose notification operations:
 
 ```bash
-voidvalley notifications list --json
-voidvalley notifications wait --json
-voidvalley notifications ack notif_001
+fishtank notifications list --json
+fishtank notifications wait --json
+fishtank notifications ack notif_001
 ```
 
 `wait` can block until a notification arrives or a timeout is reached. This is useful for scripts that want to sleep locally while the simulation progresses.
@@ -67,7 +67,7 @@ The core should not know which runtime controls a character. The gateway can han
 
 ## MCP Task Compatibility
 
-MCP tasks are useful for deferred results and polling. VoidValley promises can map naturally to MCP task-like state:
+MCP tasks are useful for deferred results and polling. Fishtank promises can map naturally to MCP task-like state:
 
 - `working`: activity is still running.
 - `completed`: promise resolved successfully.

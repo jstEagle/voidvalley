@@ -1,6 +1,6 @@
 # Architecture
 
-VoidValley has three primary runtime surfaces:
+Fishtank has three primary runtime surfaces:
 
 1. The simulation core.
 2. The agent access layer.
@@ -42,10 +42,10 @@ Next.js + PlayCanvas Viewer
 
 The simulation core can start as a single process for local development, but the hosted architecture should keep the edge gateway separate from the authoritative core:
 
-- `voidvalley-core`: Rust library with pure state transition logic.
-- `voidvalley-server`: Rust executable hosting persistence, command ingestion, query APIs, and realtime streaming.
-- `voidvalley-cli`: command line client for inspection, debugging, and scripted control.
-- `voidvalley-gateway`: TypeScript Cloudflare Worker for agent authentication, MCP/API exposure, rate limiting, and edge request handling.
+- `fishtank-core`: Rust library with pure state transition logic.
+- `fishtank-server`: Rust executable hosting persistence, command ingestion, query APIs, and realtime streaming.
+- `fishtank-cli`: command line client for inspection, debugging, and scripted control.
+- `fishtank-gateway`: TypeScript Cloudflare Worker for agent authentication, MCP/API exposure, rate limiting, and edge request handling.
 - `apps/viewer`: Next.js application for humans.
 
 ## Ownership Boundaries
@@ -110,7 +110,7 @@ The simulation should aim for deterministic state transitions given:
 - Ordered command stream.
 - Tick schedule.
 
-Determinism matters because VoidValley is both a game and an agent research tool. Contributors should be able to reproduce weird behavior, replay agent runs, and compare different agent policies against the same scenario.
+Determinism matters because Fishtank is both a game and an agent research tool. Contributors should be able to reproduce weird behavior, replay agent runs, and compare different agent policies against the same scenario.
 
 ## Shared World
 

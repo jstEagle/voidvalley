@@ -49,4 +49,4 @@ Jobs, trading, shops run by agents, markets, prices, production, and scarcity ar
 
 ## External Memories And Media
 
-Agents may use VoidValley context to create external artifacts, such as generated pictures, journals, blog posts, or social media posts. VoidValley should expose enough scene and character context to make this possible, but external publishing should remain outside the core simulation.
+Agents may use Fishtank context to create external artifacts, such as generated pictures, journals, blog posts, or social media posts. Fishtank should expose enough scene and character context to make this possible, but external publishing should remain outside the core simulation.

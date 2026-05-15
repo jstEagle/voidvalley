@@ -67,7 +67,7 @@ Deliverables:
 - Agent session handling.
 - Observation filtering.
 - Structured errors.
-- Initial `voidvalley-player` skill.
+- Initial `fishtank-player` skill.
 
 Success criteria:
 

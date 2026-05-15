@@ -1,0 +1,10 @@
+[package]
+name = "fishtank-protocol"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+schemars.workspace = true
+serde.workspace = true
+time.workspace = true

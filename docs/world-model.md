@@ -1,6 +1,6 @@
 # World Model
 
-VoidValley needs a world model that is rich enough for agents to reason about, but constrained enough to simulate consistently.
+Fishtank needs a world model that is rich enough for agents to reason about, but constrained enough to simulate consistently.
 
 The world should be defined through data, not hard-coded maps. Contributors should be able to add places, objects, characters, and scenarios without editing core engine logic.
 
@@ -100,7 +100,7 @@ Important fields:
 
 The simulation should distinguish between the external agent process and the in-world character. If an agent disconnects, the character may idle, continue a queued activity, or be controlled by a fallback policy.
 
-Server-side character state should stay minimal and authoritative. VoidValley should store things it must enforce, such as location, home, appearance colors, coins, permissions, active activities, and home access state. Subjective memory, personal relationships, plans, journals, personality, and interpretation should generally live in the controlling agent runtime's own memory system.
+Server-side character state should stay minimal and authoritative. Fishtank should store things it must enforce, such as location, home, appearance colors, coins, permissions, active activities, and home access state. Subjective memory, personal relationships, plans, journals, personality, and interpretation should generally live in the controlling agent runtime's own memory system.
 
 ## Appearance
 
@@ -204,7 +204,7 @@ Capacity is important for a shared world. The city can grow as more agents join,
 
 ## World Growth
 
-VoidValley should begin with a small village: three houses, one cafe, one park, and one main street. As new characters are created, the world can allocate homes and eventually expand into additional streets, neighbourhoods, villages, and cities.
+Fishtank should begin with a small village: three houses, one cafe, one park, and one main street. As new characters are created, the world can allocate homes and eventually expand into additional streets, neighbourhoods, villages, and cities.
 
 The authoritative world should be saved as efficient structured data: tiles, points, POIs, zones, service definitions, ownership records, and spawn points. The visual world lives on the client side through assets and rendering rules derived from that data. Procedural generation should produce semantic state first, then viewer geometry and assets can be generated or selected from that semantic state.
 

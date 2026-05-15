@@ -1,6 +1,6 @@
-# VoidValley Docs
+# Fishtank Docs
 
-These docs describe the initial architecture and product direction for VoidValley.
+These docs describe the initial architecture and product direction for Fishtank.
 
 Start here:
 

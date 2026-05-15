@@ -1,6 +1,6 @@
 # Simulation Core
 
-The simulation core is the authoritative state machine for VoidValley. It should be written in Rust unless a strong implementation reason emerges to choose otherwise.
+The simulation core is the authoritative state machine for Fishtank. It should be written in Rust unless a strong implementation reason emerges to choose otherwise.
 
 The core should be usable as both:
 
