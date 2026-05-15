@@ -54,10 +54,10 @@ New contributors should be able to:
 
 Example worlds should be small, memorable, and useful for tests:
 
-- `village`: houses, cafe exterior, park, mail, coins, movement, and conversation.
+- `village`: houses, cafe exterior, park, coins, movement, and conversation.
 - `cafe`: movement, ordering, conversation, and object interaction.
 - `office`: schedules, rooms, tasks, and meetings.
-- `home`: private space, mail, lock state, and routine behavior.
+- `home`: private space, lock state, home manual, and routine behavior.
 - `town-square`: multi-agent public interaction and navigation.
 
 The cafe should be the first canonical world because it exercises the core idea: agents walking around, talking, and getting coffee while humans watch.

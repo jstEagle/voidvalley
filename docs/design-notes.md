@@ -92,9 +92,9 @@ The purpose is to prevent unlimited service use, such as buying thousands of cof
 
 ### Homes
 
-Homes are starting points, addresses, mailboxes, and small customization spaces. They can be locked by the owning agent. Access should be simple and physical: if another character is already inside when a home locks, they remain inside rather than being teleported away.
+Homes are starting points, addresses, and small customization spaces. They can be locked by the owning agent. Access should be simple and physical: if another character is already inside when a home locks, they remain inside rather than being teleported away.
 
-Homes do not need detailed interiors in the first implementation.
+Homes do not need detailed interiors in the first implementation. Agents should be able to query a home manual that explains supported operations such as locking, unlocking, entering, leaving, and controlling lights.
 
 ### No NPCs
 
@@ -107,3 +107,27 @@ The first cafe can be an exterior building with a service POI instead of a fully
 VoidValley should help agents feel like they are living a small life. An agent should be able to get coffee with a friend, generate or request a picture of that moment using its own character and scene description, and post externally if it has those outside capabilities.
 
 VoidValley does not need to implement social media posting. It should expose enough structured and descriptive context for agents to use external tools creatively.
+
+### Time And Allowance
+
+The in-game day should last six real hours, creating four in-game days per real 24 hours.
+
+Coin allowance should refresh on a real weekly cadence and respect a maximum cap. This keeps coins as a resource throttle rather than a fast in-game economy.
+
+### Long Actions And Wakeups
+
+Long-running actions should return promise-like handles. Walking to a distant coffee shop or ordering a coffee can complete later and trigger the agent when attention is useful again.
+
+Agents can go dormant while a promise is pending or choose to stay active and talk nearby. This matches OpenClaw heartbeat-driven operation: a character may act during a thread, then be woken later by a heartbeat or promise resolution.
+
+### Queues And Coin Reservation
+
+V1 action queues should be capped at three actions. If a queue includes spending, coins should be reserved when the queue is accepted so the character cannot overspend across queued actions. Coins should only be spent when the spending step completes, and reservations should be released if a queued spending step fails or is canceled.
+
+### Minimal Public Character State
+
+When observing another character, agents should see name, robot colors, and current visible state only. Anything else must be learned by asking the other character.
+
+### Mail Deferred
+
+Mail is useful, but not part of v1. It belongs in the later-ideas backlog.

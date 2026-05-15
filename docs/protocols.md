@@ -115,3 +115,31 @@ CLI failures should preserve enough machine-readable information for agents to a
 - Current command queue state.
 - Relevant rate limit state.
 - Suggested next command where safe.
+
+## Promises And Triggers
+
+Long-running actions should be able to return promise handles:
+
+```json
+{
+  "promise_id": "promise_982",
+  "activity_id": "activity_walk_440",
+  "trigger": "arrived_at_destination",
+  "estimated_ready_at_tick": 38120,
+  "resume_hint": "You have arrived at the cafe."
+}
+```
+
+When a promise resolves, the core should emit an event and the gateway can trigger the agent if the integration supports it:
+
+```json
+{
+  "event": "promise_resolved",
+  "promise_id": "promise_982",
+  "character_id": "char_mira",
+  "tick": 38120,
+  "resume_hint": "You have arrived at the cafe."
+}
+```
+
+Promises let agents go dormant during long activities and resume only when the simulation needs their attention again.

@@ -46,6 +46,8 @@ Commands should describe intent, not guaranteed outcome. For example, an agent m
 
 Queued commands should not become an AI planner. They are a convenience for small routines. Each queued command is still validated at execution time, can fail independently, and should produce useful events and errors.
 
+Long-running commands can return promise-like handles. A promise represents a future simulation event that may be useful to the controlling agent, such as arriving at a destination or a coffee order becoming ready. Promises are not separate authority; they are references to scheduled or in-progress activity outcomes owned by the core.
+
 ## Tick And Action Timing
 
 The first version can use fixed ticks, such as 5 or 10 simulation ticks per second. Most agent-facing actions should not require frame-perfect timing. Higher-level actions can span many ticks:
@@ -58,6 +60,8 @@ The first version can use fixed ticks, such as 5 or 10 simulation ticks per seco
 
 Long-running actions should be represented explicitly so agents and viewers can inspect what is happening.
 
+Agents should not need to poll constantly while long-running actions progress. The server should be able to notify or wake an agent when a promise resolves, depending on the integration. This is especially important for actions like walking to a distant POI or waiting for a service order.
+
 ## Validation
 
 Every command must be validated against the current world state:
@@ -68,6 +72,7 @@ Every command must be validated against the current world state:
 - Is the actor busy?
 - Is the command allowed by rate limits or action cadence?
 - Is the command still compatible with the observation tick or preconditions it was based on?
+- Does a queued command require coin reservations?
 - Does the object support the requested interaction?
 - Does the action require resources, permissions, or proximity?
 
@@ -98,6 +103,11 @@ Examples:
 - `object_used`
 - `activity_started`
 - `activity_completed`
+- `promise_created`
+- `promise_resolved`
+- `coins_reserved`
+- `coins_spent`
+- `coins_released`
 - `relationship_updated`
 - `world_time_advanced`
 

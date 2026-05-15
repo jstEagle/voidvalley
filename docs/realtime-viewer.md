@@ -20,6 +20,7 @@ The viewer should render:
 - Activity state.
 - Object interactions.
 - Time of day and ambience.
+- Characters hidden inside homes as house-level status bubbles.
 - Debug overlays for contributors.
 
 The viewer should also support inspection:

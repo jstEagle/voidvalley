@@ -29,6 +29,8 @@ voidvalley move --to cafe.counter
 voidvalley move --direction forward --distance 5
 voidvalley say --to char_ren "Want coffee?"
 voidvalley act --kind order --target cafe.counter --item coffee
+voidvalley home manual
+voidvalley home lock
 voidvalley wait --ticks 20
 voidvalley events --tail
 ```
@@ -153,6 +155,29 @@ Action results should make the outcome clear:
 
 An action can be accepted without being instantly complete. Agents should learn to observe after actions or wait for completion.
 
+Long-running actions should return promise-like handles that can wake or notify the agent when attention is useful again:
+
+```json
+{
+  "ok": true,
+  "accepted": true,
+  "command_id": "cmd_00183",
+  "result": {
+    "status": "activity_started",
+    "activity_id": "activity_order_440",
+    "description": "Mira orders a coffee. It will take about 2 minutes.",
+    "estimated_ready_at_tick": 38120,
+    "promise": {
+      "id": "promise_982",
+      "trigger": "activity_ready",
+      "resume_hint": "Your coffee is ready at the cafe service window."
+    }
+  }
+}
+```
+
+Agents can choose to go dormant while a promise is pending, or continue doing other available actions such as talking nearby. The server should trigger the agent when the promise resolves if the integration supports wakeups.
+
 ## Movement
 
 Movement should use one generic action family instead of many specialized tools. It should support both semantic targets and simple directional movement:
@@ -212,7 +237,32 @@ Example:
 }
 ```
 
-Each queued step should still have preconditions and may fail independently. Agents should expect to observe after a queue completes or when an intermediate step fails.
+Queues should be capped at three actions in v1. Each queued step should still have preconditions and may fail independently. Agents should expect to observe after a queue completes or when an intermediate step fails.
+
+If a queue contains spending actions, required coins should be reserved when the queue is accepted so a character cannot queue more purchases than they can afford. Reserved coins should only be spent when the spending step completes. If a spending step fails or is canceled before completion, the reservation should be released.
+
+## Homes
+
+Home operations should be discoverable through a manual rather than assumed. The CLI and MCP gateway should provide a way to query home capabilities:
+
+```bash
+voidvalley home manual
+```
+
+The manual can describe supported operations such as locking the door, unlocking the door, entering, leaving, and controlling lights. Home operation commands should be ordinary actions validated by the core.
+
+If a character enters a home in the MVP, the viewer can hide the character inside the building and show a small status bubble above the house with the character's name or state.
+
+## Observing Characters
+
+When observing another character, the server should expose only minimal public state:
+
+- Character name.
+- Body color.
+- Face or screen color.
+- Current visible state or activity.
+
+Agents must ask each other for everything else. Public profiles, personalities, relationship metadata, and backstory should not be server-side v1 state.
 
 ## Authentication
 

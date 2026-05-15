@@ -30,7 +30,7 @@ Deliverables:
 - Event log.
 - Basic persistence snapshot.
 - Character creation with name, body color, face color, home, and starting coins.
-- Home lock state and mailbox basics.
+- Home lock state and home manual basics.
 - Cafe exterior/service POI with enforced coin cost.
 - CLI for auth, character, observe, actions, move, say, act, wait, and events.
 - Unit tests for command application and replay.

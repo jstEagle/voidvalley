@@ -30,7 +30,6 @@ Possible components:
 - `Actor`: can submit actions.
 - `Schedule`: planned routines or scenario-driven behavior.
 - `ConversationParticipant`: speaking, listening, or queued dialogue state.
-- `Mailbox`: messages delivered to a home or character-owned address.
 
 ## Locations
 
@@ -94,14 +93,12 @@ Important fields:
 - Home assignment.
 - Robot body color.
 - Robot face or screen color.
-- Public description.
-- Private status.
 - Recent observations.
 - Permissions.
 
 The simulation should distinguish between the external agent process and the in-world character. If an agent disconnects, the character may idle, continue a queued activity, or be controlled by a fallback policy.
 
-Server-side character state should stay minimal and authoritative. VoidValley should store things it must enforce, such as location, home, appearance colors, coins, permissions, active activities, mail delivery state, and home access state. Subjective memory, personal relationships, plans, journals, personality, and interpretation should generally live in the OpenClaw agent's own memory system.
+Server-side character state should stay minimal and authoritative. VoidValley should store things it must enforce, such as location, home, appearance colors, coins, permissions, active activities, and home access state. Subjective memory, personal relationships, plans, journals, personality, and interpretation should generally live in the OpenClaw agent's own memory system.
 
 ## Appearance
 
@@ -120,9 +117,9 @@ Homes should support:
 
 - Spawn and return-home behavior.
 - Basic lock state controlled by the owner.
-- Mail delivery that the character can read.
 - Small cosmetic customization later.
 - A stable address in the growing village.
+- A queryable home manual that describes supported home operations.
 
 For the MVP, homes do not need detailed interiors. If interiors are absent, entering a home can be represented as a state transition to a private home zone. If interiors are modeled later, access rules should be simple and physical: a locked home blocks entry, but if another character is already inside when it locks, they remain inside until they leave or are otherwise handled by world rules.
 
@@ -130,7 +127,7 @@ For the MVP, homes do not need detailed interiors. If interiors are absent, ente
 
 Coins are an enforced artificial resource, not a full real-world economy.
 
-Characters should start with a small coin balance, possibly with slight randomization. The world can grant a weekly allowance up to a limit. Spending coins on coffee, food, and similar services deletes the spent coins from circulation.
+Characters should start with a small coin balance, possibly with slight randomization. The world can grant an allowance every real week up to a balance cap. Spending coins on coffee, food, and similar services deletes the spent coins from circulation.
 
 The purpose is to limit unlimited consumption and give actions some cost without building a full economy. Income, jobs, trade, and markets are not MVP requirements.
 
@@ -199,7 +196,7 @@ World time should be explicit. The system should support:
 - Activity durations.
 - Replay timestamps.
 
-The in-game day/night rhythm should be compressed. A working target is two real hours of day and two real hours of night. This gives agents regular routines without requiring a real 24-hour cycle.
+The in-game day/night rhythm should be compressed. A working target is a six-real-hour in-game day, creating four in-game days every real 24 hours. This gives agents regular routines without requiring a real 24-hour cycle.
 
 The project may eventually support accelerated simulation time, but early versions should prioritize clarity and reproducibility.
 
@@ -207,4 +204,4 @@ The project may eventually support accelerated simulation time, but early versio
 
 OpenClaw agents may interact with the world during heartbeat-driven sessions. A character may be actively controlled while the agent is awake in a thread, then stop receiving commands when the session ends.
 
-If a character is offline or inactive for a timeout, the server should send them home. Current activities can finish or be interrupted according to their activity rules, but the default long-term fallback is returning home rather than continuing complex autonomous behavior server-side.
+If a character is offline or inactive for one in-game day, currently six real hours after the last action taken by the agent, the server should send them home. Current activities can finish or be interrupted according to their activity rules, but the default long-term fallback is returning home rather than continuing complex autonomous behavior server-side.

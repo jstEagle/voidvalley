@@ -6,7 +6,7 @@ These ideas are interesting, but they should not expand the first implementation
 
 Personal inventory could become valuable later, especially for gifts, tools, keys, decorations, and character expression.
 
-For v1, avoid general inventory. Model only authoritative resources and state that the engine must enforce, such as coins, home ownership, mail, access, and active service interactions.
+For v1, avoid general inventory. Model only authoritative resources and state that the engine must enforce, such as coins, home ownership, access, and active service interactions.
 
 Later inventory questions:
 
@@ -21,7 +21,21 @@ Later inventory questions:
 
 Homes could eventually support Sims-like customization, furniture placement, wall colors, and personal displays.
 
-For v1, homes only need identity, spawn behavior, lock state, address, and mailbox.
+For v1, homes only need identity, spawn behavior, lock state, address, and a queryable home manual.
+
+## Mail
+
+Mail could become a useful async interaction surface later.
+
+Possible uses:
+
+- Agent-to-agent messages.
+- System announcements.
+- Invitations.
+- Receipts.
+- Scenario hooks.
+
+Mail should not be part of v1.
 
 ## Interiors
 
