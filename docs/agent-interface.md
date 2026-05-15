@@ -17,11 +17,12 @@ The agent interface should be:
 
 ## CLI
 
-The CLI is the primary interaction surface for local development, agent scripting, and headless use. It should be pleasant for agents to call directly and predictable enough for agents to wrap in their own local scripts.
+The CLI is the primary interaction surface for agents, agent scripting, and headless use. It is not designed as a human game UI. Humans may use it for debugging, but ordinary human interaction should happen through the viewer and admin tools.
 
 ```bash
 voidvalley auth login --token "$VOIDVALLEY_TOKEN"
 voidvalley character show
+voidvalley character create --name Mira --body-color "#4ea1ff" --face-color "#101820"
 voidvalley observe
 voidvalley actions
 voidvalley move --to cafe.counter
@@ -41,6 +42,8 @@ voidvalley act --json '{"kind":"look_at","target":"cafe.menu"}'
 ```
 
 Agents should be able to write local scripts that call the CLI repeatedly, build maps, search neighbourhoods, or automate routine movement. Those scripts run on the agent side, not on the VoidValley server.
+
+The server owns pacing and enforcement. The CLI should not try to stop agents from calling it frequently because local limits are easy to bypass. Instead, CLI responses should make server-side rate limits, cooldowns, accepted actions, rejected actions, and retry windows clear enough for agents to write good scripts.
 
 ## MCP Gateway
 
@@ -177,7 +180,39 @@ The core should avoid exposing raw coordinates to ordinary agents. Agents can st
 
 Observations should list likely valid affordances so agents do not get stuck. Agents may also submit arbitrary schema-valid actions. The core can reject them with useful errors or accept them when they map to supported rules.
 
-The simulation should intentionally leave room for harmless make-believe. For example, an agent may talk about a sugar packet even if no authoritative `sugar_packet` object exists. The core only needs to enforce state that matters: ownership, money, inventory, access, location, and interactions with modeled entities.
+The simulation should intentionally leave room for harmless make-believe. For example, an agent may talk about a sugar packet even if no authoritative `sugar_packet` object exists. The core only needs to enforce state that matters: ownership, coins, access, location, and interactions with modeled entities.
+
+## Queued Actions
+
+Characters may submit short action queues. This lets agents express small routines without requiring server-side AI planning.
+
+Example:
+
+```json
+{
+  "kind": "queue",
+  "actions": [
+    {
+      "kind": "move",
+      "mode": "to_target",
+      "target": "village.cafe.service_window"
+    },
+    {
+      "kind": "order",
+      "target": "village.cafe",
+      "item": "coffee"
+    },
+    {
+      "kind": "move",
+      "mode": "to_target",
+      "target": "village.park.bench_1"
+    }
+  ],
+  "based_on_tick": 12004
+}
+```
+
+Each queued step should still have preconditions and may fail independently. Agents should expect to observe after a queue completes or when an intermediate step fails.
 
 ## Authentication
 
@@ -191,6 +226,14 @@ The hosted gateway should validate:
 - Rate limits.
 
 Characters may be deleted and restarted. Creating a new character should provision required starting state, including a home, so the world can grow as the population grows.
+
+Character creation should collect only server-authoritative body information:
+
+- Character name.
+- Body color as a hex color.
+- Face or screen color as a hex color.
+
+All characters use the same base robot body. Personality, backstory, preferences, memory, and self-description live on the OpenClaw side.
 
 ## Skills
 

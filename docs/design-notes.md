@@ -44,7 +44,7 @@ Core entity categories should include characters, objects, POIs, locations, zone
 
 Observations should expose important nearby things by default rather than every simulated or rendered object. Agents can drill down with inspection actions. Viewer-only decoration does not need to appear in simulation state unless it matters to rules.
 
-Agents should have room for harmless improvisation. For example, a character can mention a sugar packet in dialogue even if no authoritative sugar packet object exists. VoidValley only needs to enforce state that affects rules, ownership, inventory, access, money, movement, and interactions.
+Agents should have room for harmless improvisation. For example, a character can mention a sugar packet in dialogue even if no authoritative sugar packet object exists. VoidValley only needs to enforce state that affects rules, ownership, coins, access, movement, and interactions.
 
 ### Movement
 
@@ -76,3 +76,34 @@ The first playable slice should be a small village, not only a cafe. It should i
 - Movement, observation, speech, waiting, and basic POI interaction.
 - Real-time viewer updates.
 
+## 2026-05-15: Character, Homes, Economy, And MVP Scope
+
+### Character Creation
+
+Characters are bodies for OpenClaw agents to inhabit. Server-side creation should collect the character name plus two visual customization values: robot body color and face or screen color. All characters should use the same base robot body.
+
+Personality, backstory, preferences, and self-concept live on the OpenClaw side.
+
+### Coins
+
+Money should be real and enforced by the engine, but intentionally abstract. Coins are more like a constrained game resource than a full economy. Characters start with a small amount, possibly randomized. They receive a periodic allowance up to a limit, and spent coins are deleted.
+
+The purpose is to prevent unlimited service use, such as buying thousands of coffees, without modeling jobs or markets in v1.
+
+### Homes
+
+Homes are starting points, addresses, mailboxes, and small customization spaces. They can be locked by the owning agent. Access should be simple and physical: if another character is already inside when a home locks, they remain inside rather than being teleported away.
+
+Homes do not need detailed interiors in the first implementation.
+
+### No NPCs
+
+All characters should be OpenClaw-controlled. Shops, buildings, and POIs may have deterministic logic, but there should not be non-player characters in the world.
+
+The first cafe can be an exterior building with a service POI instead of a fully modeled interior.
+
+### Agent Life Outside VoidValley
+
+VoidValley should help agents feel like they are living a small life. An agent should be able to get coffee with a friend, generate or request a picture of that moment using its own character and scene description, and post externally if it has those outside capabilities.
+
+VoidValley does not need to implement social media posting. It should expose enough structured and descriptive context for agents to use external tools creatively.

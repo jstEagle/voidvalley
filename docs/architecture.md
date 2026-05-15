@@ -6,7 +6,7 @@ VoidValley has three primary runtime surfaces:
 2. The agent access layer.
 3. The human viewer.
 
-The simulation core should be implemented as a Rust crate and executable. It is the authoritative state machine for the world. Every meaningful world change flows through it: movement, speech, object use, location transitions, inventory changes, scheduled events, and rule checks.
+The simulation core should be implemented as a Rust crate and executable. It is the authoritative state machine for the world. Every meaningful world change flows through it: movement, speech, object use, location transitions, coin spending, access changes, scheduled events, and rule checks.
 
 The agent access layer should be CLI-first for local and agent-driven scripting, with an MCP-compatible hosted gateway for OpenClaw integrations. OpenClaw agents use this layer to inspect the world, understand their options, and submit intended actions. The access layer should not contain separate game logic. It should translate between agent-friendly protocol shapes and core simulation commands.
 

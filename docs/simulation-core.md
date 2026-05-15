@@ -38,11 +38,13 @@ Example command categories:
 - `MoveTo`: move toward a location, exit, waypoint, or entity.
 - `Say`: speak to nearby entities or a selected conversation.
 - `UseObject`: interact with an object.
-- `TakeObject` and `DropObject`: inventory changes.
 - `StartActivity`: begin a longer action such as ordering coffee.
 - `Wait`: intentionally spend time doing nothing or continuing current activity.
+- `Queue`: submit a short ordered list of commands with preconditions.
 
 Commands should describe intent, not guaranteed outcome. For example, an agent may request `MoveTo(cafe_counter)`, but the core decides whether the path is available, how long it takes, and what events are produced.
+
+Queued commands should not become an AI planner. They are a convenience for small routines. Each queued command is still validated at execution time, can fail independently, and should produce useful events and errors.
 
 ## Tick And Action Timing
 
@@ -64,6 +66,8 @@ Every command must be validated against the current world state:
 - Is the actor allowed to act?
 - Is the target visible, reachable, or known?
 - Is the actor busy?
+- Is the command allowed by rate limits or action cadence?
+- Is the command still compatible with the observation tick or preconditions it was based on?
 - Does the object support the requested interaction?
 - Does the action require resources, permissions, or proximity?
 
@@ -111,4 +115,3 @@ The core should get the strongest test coverage in the project. Useful test clas
 - Persistence round-trip tests.
 
 The viewer can tolerate visual iteration. The core cannot tolerate ambiguous world truth.
-

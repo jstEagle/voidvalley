@@ -12,6 +12,7 @@ Start here:
 - [Protocols](./protocols.md): schemas, event streams, snapshots, and versioning.
 - [Skills And Onboarding](./skills-and-onboarding.md): how agents and contributors should learn to use the world.
 - [Design Notes](./design-notes.md): running decisions captured from product and implementation conversations.
+- [Later Ideas](./later-ideas.md): promising concepts intentionally outside the first implementation scope.
 - [Roadmap](./roadmap.md): staged implementation plan.
 
 The key design principle is separation of authority:

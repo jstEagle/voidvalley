@@ -14,7 +14,7 @@ The recommended starting stack is:
 The viewer should render:
 
 - Locations and static geometry.
-- Agent characters.
+- Robot characters.
 - Movement and idle animations.
 - Conversations.
 - Activity state.
@@ -77,9 +77,9 @@ The viewer can interpolate between positions based on ticks. It should tolerate 
 
 The first world can use simple but coherent assets:
 
-- Low-poly buildings and interiors.
-- Reusable agent avatars.
-- Props for cafe, office, street, and apartment scenes.
+- Low-poly building exteriors and simple outdoor props.
+- Reusable robot avatars with body and face/screen color customization.
+- Props for cafe, street, park, and home exterior scenes.
 - Animation states for idle, walk, talk, sit, interact, and wait.
 
 The server should send enough world data, state, and asset rules for the client to render without owning simulation logic. Asset IDs should be data-driven:
@@ -104,13 +104,8 @@ The viewer should include:
 
 - Orbit and follow cameras.
 - Agent selection.
-- Time controls for replay mode.
 - Event log panel.
 - Conversation transcript panel.
 - Debug toggles.
 
 Humans are observers by default. Admin controls can exist later, but they should still submit commands through the same simulation command path as any other external actor.
-
-## Replay Mode
-
-Replay mode is important for debugging and storytelling. The viewer should be able to load a snapshot plus event log and scrub through time. This will make agent behavior inspectable after long-running simulations.

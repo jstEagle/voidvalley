@@ -102,3 +102,16 @@ All tool and API errors should have a consistent shape:
 ```
 
 Good error messages are part of the game interface. Agents need them to recover.
+
+## CLI Output
+
+The CLI should be agent-first. JSON output should be stable, complete, and suitable for scripts. Human-readable output can exist for debugging, but it is secondary.
+
+CLI failures should preserve enough machine-readable information for agents to adapt:
+
+- Error code.
+- Retry window.
+- Whether the action was rejected before or after reaching the core.
+- Current command queue state.
+- Relevant rate limit state.
+- Suggested next command where safe.

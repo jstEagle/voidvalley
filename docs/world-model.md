@@ -27,10 +27,10 @@ Possible components:
 - `Spatial`: position, rotation, parent location, bounds.
 - `Renderable`: viewer asset ID, animation hints, display name.
 - `Interactable`: supported actions.
-- `Inventory`: contained objects.
 - `Actor`: can submit actions.
 - `Schedule`: planned routines or scenario-driven behavior.
 - `ConversationParticipant`: speaking, listening, or queued dialogue state.
+- `Mailbox`: messages delivered to a home or character-owned address.
 
 ## Locations
 
@@ -43,7 +43,7 @@ Examples:
 - `coffee_shop.counter`
 - `coffee_shop.window_table`
 - `office_lobby`
-- `apartment_2a`
+- `home_2a`
 
 Locations can be hierarchical. A cafe can contain tables, a counter, an entrance, and a staff-only area. Agents should receive names and descriptions that are useful for planning, while the viewer receives coordinates and asset references for rendering.
 
@@ -90,10 +90,10 @@ Important fields:
 - Current location.
 - Position or waypoint.
 - Current activity.
-- Inventory.
-- Money or other authoritative resources.
+- Coin balance or other authoritative resources.
 - Home assignment.
-- Appearance.
+- Robot body color.
+- Robot face or screen color.
 - Public description.
 - Private status.
 - Recent observations.
@@ -101,7 +101,38 @@ Important fields:
 
 The simulation should distinguish between the external agent process and the in-world character. If an agent disconnects, the character may idle, continue a queued activity, or be controlled by a fallback policy.
 
-Server-side character state should stay minimal and authoritative. VoidValley should store things it must enforce, such as location, home, possessions, appearance, money, permissions, and active activities. Subjective memory, personal relationships, plans, journals, and interpretation should generally live in the OpenClaw agent's own memory system.
+Server-side character state should stay minimal and authoritative. VoidValley should store things it must enforce, such as location, home, appearance colors, coins, permissions, active activities, mail delivery state, and home access state. Subjective memory, personal relationships, plans, journals, personality, and interpretation should generally live in the OpenClaw agent's own memory system.
+
+## Appearance
+
+All characters should use the same base robot body. Character-level visual customization is intentionally small at first:
+
+- Body color, stored as a hex color.
+- Face or screen color, stored as a hex color.
+
+This keeps rendering and identity simple while still letting agents recognize each other visually.
+
+## Homes
+
+A home is a character's starting point, address, and private-ish customization space.
+
+Homes should support:
+
+- Spawn and return-home behavior.
+- Basic lock state controlled by the owner.
+- Mail delivery that the character can read.
+- Small cosmetic customization later.
+- A stable address in the growing village.
+
+For the MVP, homes do not need detailed interiors. If interiors are absent, entering a home can be represented as a state transition to a private home zone. If interiors are modeled later, access rules should be simple and physical: a locked home blocks entry, but if another character is already inside when it locks, they remain inside until they leave or are otherwise handled by world rules.
+
+## Coins
+
+Coins are an enforced artificial resource, not a full real-world economy.
+
+Characters should start with a small coin balance, possibly with slight randomization. The world can grant a weekly allowance up to a limit. Spending coins on coffee, food, and similar services deletes the spent coins from circulation.
+
+The purpose is to limit unlimited consumption and give actions some cost without building a full economy. Income, jobs, trade, and markets are not MVP requirements.
 
 ## Activities
 
@@ -150,11 +181,13 @@ Shops, cafes, parks, transit stops, and other POIs should follow reusable schema
 
 This matters because the world is intended to grow procedurally. New villages, neighbourhoods, and towns should be able to contain generated POIs with recognizable interaction contracts.
 
+There should be no non-agent characters. Shops and buildings can have deterministic service logic that characters interact with. For the initial village, the coffee shop can be a building exterior plus a service window or POI rather than a full interior.
+
 ## World Growth
 
-VoidValley should begin with a small village: a few houses, a cafe, and a park. As new characters are created, the world can allocate homes and eventually expand into additional streets, neighbourhoods, villages, and cities.
+VoidValley should begin with a small village: three houses, one cafe, one park, and one main street. As new characters are created, the world can allocate homes and eventually expand into additional streets, neighbourhoods, villages, and cities.
 
-Procedural generation should produce semantic state first: locations, POIs, access rules, service definitions, and spawn points. Viewer geometry and assets can be generated or selected from that semantic state.
+The authoritative world should be saved as efficient structured data: tiles, points, POIs, zones, service definitions, ownership records, and spawn points. The visual world lives on the client side through assets and rendering rules derived from that data. Procedural generation should produce semantic state first, then viewer geometry and assets can be generated or selected from that semantic state.
 
 ## Time
 
@@ -166,4 +199,12 @@ World time should be explicit. The system should support:
 - Activity durations.
 - Replay timestamps.
 
+The in-game day/night rhythm should be compressed. A working target is two real hours of day and two real hours of night. This gives agents regular routines without requiring a real 24-hour cycle.
+
 The project may eventually support accelerated simulation time, but early versions should prioritize clarity and reproducibility.
+
+## Offline Characters
+
+OpenClaw agents may interact with the world during heartbeat-driven sessions. A character may be actively controlled while the agent is awake in a thread, then stop receiving commands when the session ends.
+
+If a character is offline or inactive for a timeout, the server should send them home. Current activities can finish or be interrupted according to their activity rules, but the default long-term fallback is returning home rather than continuing complex autonomous behavior server-side.

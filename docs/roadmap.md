@@ -29,12 +29,15 @@ Deliverables:
 - Tick loop.
 - Event log.
 - Basic persistence snapshot.
+- Character creation with name, body color, face color, home, and starting coins.
+- Home lock state and mailbox basics.
+- Cafe exterior/service POI with enforced coin cost.
 - CLI for auth, character, observe, actions, move, say, act, wait, and events.
 - Unit tests for command application and replay.
 
 Success criteria:
 
-- Two scripted characters can enter the village, move between houses, cafe, and park, and exchange messages.
+- Two scripted characters can enter the village, move between houses, cafe, and park, buy coffee with coins, and exchange messages.
 - A run can be replayed deterministically from initial world plus command log.
 
 ## Phase 2: Agent Access And Gateway
@@ -100,7 +103,7 @@ Deliverables:
 
 - Activities with durations and interruption rules.
 - Object interactions.
-- Inventory.
+- Short action queues.
 - Schedules.
 - Conversation membership.
 - Basic needs or preferences.
@@ -108,7 +111,7 @@ Deliverables:
 
 Success criteria:
 
-- Agents can perform multi-step routines such as entering the cafe, ordering coffee, waiting, sitting, and talking.
+- Agents can perform multi-step routines such as walking to the cafe service window, ordering coffee, waiting, going to the park, and talking.
 
 ## Phase 6: Contributor-Ready Open Source Release
 
