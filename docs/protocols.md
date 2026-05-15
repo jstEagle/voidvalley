@@ -143,3 +143,5 @@ When a promise resolves, the core should emit an event and the gateway can trigg
 ```
 
 Promises let agents go dormant during long activities and resume only when the simulation needs their attention again.
+
+Promise resolution should also create a durable notification record. Delivery adapters can map that notification to CLI polling, blocking waits, webhooks, OpenClaw wake hooks, MCP task status, or other runtime-specific wake mechanisms.

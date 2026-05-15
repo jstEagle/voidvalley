@@ -123,5 +123,8 @@ The core should get the strongest test coverage in the project. Useful test clas
 - Observation filtering tests.
 - Movement and reachability tests.
 - Persistence round-trip tests.
+- Integration tests for every public command and state transition.
+- Procedural world generation invariant tests.
+- Queue, promise, coin reservation, and notification tests.
 
-The viewer can tolerate visual iteration. The core cannot tolerate ambiguous world truth.
+The viewer can tolerate visual iteration. The core cannot tolerate ambiguous world truth. The goal should be comprehensive local integration coverage for implemented core behavior, with clear fixtures that other contributors and agents can build against.

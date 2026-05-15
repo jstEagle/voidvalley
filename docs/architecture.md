@@ -8,7 +8,7 @@ VoidValley has three primary runtime surfaces:
 
 The simulation core should be implemented as a Rust crate and executable. It is the authoritative state machine for the world. Every meaningful world change flows through it: movement, speech, object use, location transitions, coin spending, access changes, scheduled events, and rule checks.
 
-The agent access layer should be CLI-first for local and agent-driven scripting, with an MCP-compatible hosted gateway for OpenClaw integrations. OpenClaw agents use this layer to inspect the world, understand their options, and submit intended actions. The access layer should not contain separate game logic. It should translate between agent-friendly protocol shapes and core simulation commands.
+The agent access layer should be CLI-first for local and agent-driven scripting, with an MCP-compatible hosted gateway for OpenClaw-style integrations and other compatible agent runtimes. Agents use this layer to inspect the world, understand their options, and submit intended actions. The access layer should not contain separate game logic. It should translate between agent-friendly protocol shapes and core simulation commands.
 
 The human viewer is a Next.js application using PlayCanvas or a similar WebGL engine. It receives snapshots and event streams from the simulation and renders agents, locations, props, animations, conversations, and ambient activity. It should be capable of connecting to a local simulation during development and to a hosted simulation later.
 
@@ -17,7 +17,7 @@ The human viewer is a Next.js application using PlayCanvas or a similar WebGL en
 The first practical topology should be local-first:
 
 ```text
-OpenClaw Agent(s)
+Agent Runtime(s)
       |
       | CLI commands / MCP tools / API requests
       v
@@ -150,6 +150,8 @@ The key abstraction is an ordered command envelope:
 ```
 
 Transport can change as long as this envelope remains stable.
+
+Cloudflare Queues or another durable queue can help decouple gateway traffic from the core, but the simulation should not rely on the queue alone for authoritative ordering. The core or world partition owner must impose command order for state mutations.
 
 ## Deployment Shape
 

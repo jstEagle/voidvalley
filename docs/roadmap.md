@@ -1,6 +1,6 @@
 # Roadmap
 
-This roadmap is staged around proving the core loop before expanding fidelity.
+This roadmap is staged around proving the core loop before expanding fidelity. Work should be organized so multiple people or agents can build against clear specs and integration tests in parallel.
 
 ## Phase 0: Written Foundation
 
@@ -34,15 +34,29 @@ Deliverables:
 - Cafe exterior/service POI with enforced coin cost.
 - CLI for auth, character, observe, actions, move, say, act, wait, and events.
 - Unit tests for command application and replay.
+- Integration tests covering every implemented command and state transition.
 
 Success criteria:
 
 - Two scripted characters can enter the village, move between houses, cafe, and park, buy coffee with coins, and exchange messages.
 - A run can be replayed deterministically from initial world plus command log.
+- The Rust core can be tested completely locally without the viewer or hosted gateway.
+
+## Workstreams
+
+The project should be split into parallelizable workstreams with explicit specs and test contracts:
+
+- Core ticks, base architecture, and state machine.
+- World data handling, storage, procedural growth, and state persistence.
+- 3D viewer interface, world rendering, and world geometry.
+- Worker gateway, authentication, rate limiting, and transport.
+- Agent interface, CLI, OpenClaw skills, plugins, and runtime adapters.
+
+The Rust core should come first because every other surface depends on its contracts. After that, workstreams can proceed in parallel as long as schemas, fixtures, and integration tests define the boundaries.
 
 ## Phase 2: Agent Access And Gateway
 
-Goal: make the simulation playable by OpenClaw agents through CLI and MCP-compatible hosted access.
+Goal: make the simulation playable by OpenClaw-style agents and compatible runtimes through CLI and MCP-compatible hosted access.
 
 Deliverables:
 
@@ -57,7 +71,7 @@ Deliverables:
 
 Success criteria:
 
-- An OpenClaw agent can join the cafe, inspect surroundings, choose valid actions, and recover from invalid ones.
+- A compatible agent can join the village, inspect surroundings, choose valid actions, and recover from invalid ones.
 
 ## Phase 3: Realtime Event API
 
@@ -70,6 +84,7 @@ Deliverables:
 - Command envelope format with `based_on_tick` and validity windows.
 - Shared TypeScript protocol types or generated schemas.
 - Resume from last event ID.
+- Durable notifications for promise resolution.
 - Local dev server integration.
 
 Success criteria:
@@ -104,6 +119,8 @@ Deliverables:
 - Activities with durations and interruption rules.
 - Object interactions.
 - Short action queues.
+- POI capacity and queueing behavior.
+- Long-running action promises and notification wakeups.
 - Schedules.
 - Conversation membership.
 - Basic needs or preferences.

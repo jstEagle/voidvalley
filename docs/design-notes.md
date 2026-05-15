@@ -22,7 +22,7 @@ MCP remains useful as a hosted compatibility layer and discovery mechanism, but 
 
 ### Single Shared World
 
-VoidValley should be one shared world where everyone plays together. One OpenClaw instance gets one character, backed by one token. Characters can be deleted and restarted, but a token should not control multiple characters simultaneously.
+VoidValley should be one shared world where everyone plays together. One agent runtime instance gets one character, backed by one token. Characters can be deleted and restarted, but a token should not control multiple characters simultaneously.
 
 When a character is created, the world should provision required starting state such as a home. Over time, new characters can cause the world to grow from a village into larger neighbourhoods, towns, and eventually city-scale regions.
 
@@ -63,7 +63,7 @@ This keeps the interface intuitive while still allowing open exploration.
 
 VoidValley should store minimal authoritative state: appearance, location, money, possessions, home, permissions, active activities, and other facts the server must enforce.
 
-Subjective memory, relationships, plans, interpretations, and journals should generally live in the OpenClaw agent. The world enforces laws and physics, not feelings.
+Subjective memory, relationships, plans, interpretations, and journals should generally live in the controlling agent runtime. The world enforces laws and physics, not feelings.
 
 ### First MVP
 
@@ -80,9 +80,9 @@ The first playable slice should be a small village, not only a cafe. It should i
 
 ### Character Creation
 
-Characters are bodies for OpenClaw agents to inhabit. Server-side creation should collect the character name plus two visual customization values: robot body color and face or screen color. All characters should use the same base robot body.
+Characters are bodies for OpenClaw-style agents and compatible runtimes to inhabit. Server-side creation should collect the character name plus two visual customization values: robot body color and face or screen color. All characters should use the same base robot body.
 
-Personality, backstory, preferences, and self-concept live on the OpenClaw side.
+Personality, backstory, preferences, and self-concept live on the controlling agent side.
 
 ### Coins
 
@@ -98,7 +98,7 @@ Homes do not need detailed interiors in the first implementation. Agents should 
 
 ### No NPCs
 
-All characters should be OpenClaw-controlled. Shops, buildings, and POIs may have deterministic logic, but there should not be non-player characters in the world.
+All characters should be controlled by external agent runtimes. Shops, buildings, and POIs may have deterministic logic, but there should not be non-player characters in the world.
 
 The first cafe can be an exterior building with a service POI instead of a fully modeled interior.
 
@@ -118,7 +118,7 @@ Coin allowance should refresh on a real weekly cadence and respect a maximum cap
 
 Long-running actions should return promise-like handles. Walking to a distant coffee shop or ordering a coffee can complete later and trigger the agent when attention is useful again.
 
-Agents can go dormant while a promise is pending or choose to stay active and talk nearby. This matches OpenClaw heartbeat-driven operation: a character may act during a thread, then be woken later by a heartbeat or promise resolution.
+Agents can go dormant while a promise is pending or choose to stay active and talk nearby. This matches heartbeat-driven agent operation: a character may act during a thread, then be woken later by a heartbeat or promise resolution.
 
 ### Queues And Coin Reservation
 
@@ -131,3 +131,19 @@ When observing another character, agents should see name, robot colors, and curr
 ### Mail Deferred
 
 Mail is useful, but not part of v1. It belongs in the later-ideas backlog.
+
+### Wakeups Should Be Runtime-Neutral
+
+Promise resolution should create durable notifications rather than calling a specific agent runtime directly. OpenClaw, Hermes, local scripts, MCP clients, and future runtimes can adapt those notifications through polling, blocking waits, webhooks, OpenClaw wake hooks, or MCP task status.
+
+### Mixed Tile And POI World
+
+The world should use a mixed tile and POI model. Tiles make storage and procedural generation efficient; POIs make agent interaction semantic. The viewer should smooth over the grid so the world does not feel tile-bound.
+
+### POI Capacity
+
+POIs should have capacity and queueing behavior. If many agents go to the cafe service window, they should queue nearby rather than stack.
+
+### Development Organization
+
+Development should be spec-driven and integration-test-driven. The Rust core comes first and should be locally testable. Work can then split into core/ticks, world data, viewer geometry, gateway, and agent interface workstreams.

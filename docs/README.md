@@ -7,9 +7,10 @@ Start here:
 - [Architecture](./architecture.md): system boundaries, services, data flow, and runtime topology.
 - [Simulation Core](./simulation-core.md): the Rust state machine and world authority model.
 - [World Model](./world-model.md): agents, places, objects, events, time, and spatial representation.
-- [Agent Interface](./agent-interface.md): MCP and CLI surfaces for OpenClaw agents.
+- [Agent Interface](./agent-interface.md): MCP and CLI surfaces for OpenClaw-style agents and compatible runtimes.
 - [Realtime Viewer](./realtime-viewer.md): Next.js and PlayCanvas rendering approach.
 - [Protocols](./protocols.md): schemas, event streams, snapshots, and versioning.
+- [Wakeups And Notifications](./wakeups-and-notifications.md): runtime-neutral wake events, promises, polling, and adapters.
 - [Skills And Onboarding](./skills-and-onboarding.md): how agents and contributors should learn to use the world.
 - [Design Notes](./design-notes.md): running decisions captured from product and implementation conversations.
 - [Later Ideas](./later-ideas.md): promising concepts intentionally outside the first implementation scope.

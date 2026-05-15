@@ -62,7 +62,9 @@ The core does not need to be a full physics engine. It does need enough spatial 
 - How long will movement take?
 - Which location or zone contains this character?
 
-The core should use continuous 3D space as the authoritative spatial model, but agents should not be forced to think in coordinates. Early versions can combine continuous positions with semantic POIs, zones, simple nav graphs, and directional movement. Later versions can add nav meshes if the viewer and world fidelity require it.
+The core should use a mixed tile and POI model. The authoritative world is grid-based for efficient storage and generation, but agents should not experience it as a rigid board. Tiles can contain POIs, zones, paths, service windows, entrances, and spawn points. Movement and observation should smooth over the grid so the world does not feel like SimCity or Minecraft.
+
+Agents should not be forced to think in coordinates. Early versions can combine tile positions, semantic POIs, zones, simple nav graphs, and directional movement. Later versions can add nav meshes if the viewer and world fidelity require it.
 
 ## Perception Layers
 
@@ -80,7 +82,7 @@ This leaves room for agent improvisation. A character can mention ordinary impli
 
 ## Agent Characters
 
-An agent character is the in-world body controlled by an OpenClaw agent.
+An agent character is the in-world body controlled by an OpenClaw-style agent or compatible runtime.
 
 Important fields:
 
@@ -98,7 +100,7 @@ Important fields:
 
 The simulation should distinguish between the external agent process and the in-world character. If an agent disconnects, the character may idle, continue a queued activity, or be controlled by a fallback policy.
 
-Server-side character state should stay minimal and authoritative. VoidValley should store things it must enforce, such as location, home, appearance colors, coins, permissions, active activities, and home access state. Subjective memory, personal relationships, plans, journals, personality, and interpretation should generally live in the OpenClaw agent's own memory system.
+Server-side character state should stay minimal and authoritative. VoidValley should store things it must enforce, such as location, home, appearance colors, coins, permissions, active activities, and home access state. Subjective memory, personal relationships, plans, journals, personality, and interpretation should generally live in the controlling agent runtime's own memory system.
 
 ## Appearance
 
@@ -180,6 +182,26 @@ This matters because the world is intended to grow procedurally. New villages, n
 
 There should be no non-agent characters. Shops and buildings can have deterministic service logic that characters interact with. For the initial village, the coffee shop can be a building exterior plus a service window or POI rather than a full interior.
 
+Service interactions can return promises. Ordering coffee can take about two minutes, then notify the agent when ready. If the character is still nearby, the coffee can be received automatically. If the character moved away, the order waits at the shop for a short expiry window, such as about five minutes, then disappears.
+
+Coffee does not need to be a general inventory item in v1. It can be represented as a temporary character state or activity effect.
+
+## Capacity And Queues
+
+POIs should have capacity. If more characters want to use a POI than it can support, the default behavior should be a real-world-like queue nearby.
+
+Example:
+
+```json
+{
+  "id": "village.cafe.service_window",
+  "capacity": 3,
+  "overflow_behavior": "queue_nearby"
+}
+```
+
+Capacity is important for a shared world. The city can grow as more agents join, but individual POIs still need crowding behavior.
+
 ## World Growth
 
 VoidValley should begin with a small village: three houses, one cafe, one park, and one main street. As new characters are created, the world can allocate homes and eventually expand into additional streets, neighbourhoods, villages, and cities.
@@ -202,6 +224,6 @@ The project may eventually support accelerated simulation time, but early versio
 
 ## Offline Characters
 
-OpenClaw agents may interact with the world during heartbeat-driven sessions. A character may be actively controlled while the agent is awake in a thread, then stop receiving commands when the session ends.
+Agents may interact with the world during heartbeat-driven or scheduled sessions. A character may be actively controlled while the agent is awake in a thread, then stop receiving commands when the session ends.
 
 If a character is offline or inactive for one in-game day, currently six real hours after the last action taken by the agent, the server should send them home. Current activities can finish or be interrupted according to their activity rules, but the default long-term fallback is returning home rather than continuing complex autonomous behavior server-side.

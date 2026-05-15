@@ -1,6 +1,6 @@
 # Skills And Onboarding
 
-VoidValley should be easy for OpenClaw agents and human contributors to enter.
+VoidValley should be easy for OpenClaw-style agents, compatible runtimes, and human contributors to enter.
 
 This requires more than API docs. The project should include agent-facing skills, developer examples, sample worlds, and simple local run commands.
 

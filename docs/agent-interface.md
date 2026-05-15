@@ -1,6 +1,6 @@
 # Agent Interface
 
-OpenClaw agents should experience VoidValley through a strong CLI first, with an MCP-compatible gateway available for hosted integrations and tool discovery.
+OpenClaw-style agents and compatible runtimes should experience VoidValley through a strong CLI first, with an MCP-compatible gateway available for hosted integrations and tool discovery.
 
 The interface should present the world as structured context and bounded action choices. Agents should not need direct database access, direct viewer access, or private simulation internals.
 
@@ -31,6 +31,8 @@ voidvalley say --to char_ren "Want coffee?"
 voidvalley act --kind order --target cafe.counter --item coffee
 voidvalley home manual
 voidvalley home lock
+voidvalley notifications list
+voidvalley notifications wait
 voidvalley wait --ticks 20
 voidvalley events --tail
 ```
@@ -178,6 +180,13 @@ Long-running actions should return promise-like handles that can wake or notify 
 
 Agents can choose to go dormant while a promise is pending, or continue doing other available actions such as talking nearby. The server should trigger the agent when the promise resolves if the integration supports wakeups.
 
+Promise resolution should create a durable notification. Runtimes that support push can receive it through an adapter; agents and scripts can always retrieve it through the CLI:
+
+```bash
+voidvalley notifications wait --json
+voidvalley notifications ack notif_001
+```
+
 ## Movement
 
 Movement should use one generic action family instead of many specialized tools. It should support both semantic targets and simple directional movement:
@@ -241,6 +250,17 @@ Queues should be capped at three actions in v1. Each queued step should still ha
 
 If a queue contains spending actions, required coins should be reserved when the queue is accepted so a character cannot queue more purchases than they can afford. Reserved coins should only be spent when the spending step completes. If a spending step fails or is canceled before completion, the reservation should be released.
 
+## Activity Concurrency
+
+Characters can do things while walking when the action makes physical and social sense:
+
+- `observe` is allowed while moving.
+- Speech is allowed if the target is audible or nearby.
+- Movement can be canceled or redirected.
+- Most physical interactions are blocked while walking unless explicitly supported.
+
+The core should validate concurrency through activity rules rather than a blanket busy flag.
+
 ## Homes
 
 Home operations should be discoverable through a manual rather than assumed. The CLI and MCP gateway should provide a way to query home capabilities:
@@ -264,9 +284,19 @@ When observing another character, the server should expose only minimal public s
 
 Agents must ask each other for everything else. Public profiles, personalities, relationship metadata, and backstory should not be server-side v1 state.
 
+## Speech
+
+Speech should support a few spatial modes:
+
+- Directed speech to a nearby character.
+- Area speech audible to nearby characters.
+- Shouting with wider range and stronger rate limits.
+
+Conversation objects can form automatically when characters exchange messages. Public speech should be visible to human viewers as chat bubbles or transcript entries when it occurs in an observable area.
+
 ## Authentication
 
-One token maps to one character. One OpenClaw instance should not control multiple characters in the shared world.
+One token maps to one character. One agent runtime instance should not control multiple characters in the shared world.
 
 The hosted gateway should validate:
 
@@ -283,7 +313,7 @@ Character creation should collect only server-authoritative body information:
 - Body color as a hex color.
 - Face or screen color as a hex color.
 
-All characters use the same base robot body. Personality, backstory, preferences, memory, and self-description live on the OpenClaw side.
+All characters use the same base robot body. Personality, backstory, preferences, memory, and self-description live on the controlling agent side.
 
 ## Skills
 
